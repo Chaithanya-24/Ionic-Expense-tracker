@@ -1,0 +1,157 @@
+p-button{
+    padding: 10px
+}
+.p-dialog {
+    width: 500px !important;  /* Increase width */
+    max-width: 90%;
+    max-height: 90% !important; /* Adjust height dynamically */
+    display: block;
+    white-space: normal;
+  }
+
+ 
+  
+  .p-dialog-content {
+    max-height: 1000px;  /* Increase max height */
+    
+  }
+  /* Increase modal size */
+.modal-dialog {
+    max-width: 600px; /* Adjust width */
+    width: 90%; /* Ensure responsiveness */
+  }
+  
+  .modal-content {
+    padding: 20px; /* Add more spacing */
+    font-size: 1.2rem; /* Increase text size */
+    min-height: 400px; /* Adjust as needed */
+  }
+  
+  /* Increase input field size */
+  .modal-body input,
+  .modal-body select {
+    font-size: 1.1rem;
+    padding: 10px;
+    width: 100%;
+  }
+  
+  /* Adjust save button */
+  .modal-footer .btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+  }
+
+  /* Make the dropdown expand outside the modal */
+.p-dropdown-panel {
+    max-height: none !important; /* Remove height restriction */
+    overflow-y: visible !important; /* Ensure visibility */
+  }
+  
+  /* If using Bootstrap select */
+  select {
+    position: relative;
+    z-index: 1050; /* Ensure dropdown appears above modal */
+  }
+  
+  
+  .expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: 50px; /* Adds spacing between input fields */
+  }
+  
+  .p-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px; /* Ensures spacing between input fields */
+  }
+  
+/* Adds space between the last input (Date) and the buttons */
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Adjust button alignment */
+  gap: 10px; /* Space between Save & Cancel buttons */
+  margin-top: 25px; /* Add space between inputs and buttons */
+}
+.p-field label {
+  margin-bottom: 5px; /* Space between label and input */
+  font-weight: 500;
+}
+
+.p-inputtext, 
+.p-dropdown, 
+.p-calendar {
+  width: 100% !important; /* Make all input fields same width */
+  padding: 5px;
+  box-sizing: border-box; /* Prevent width issues */
+  height: 42px !important; /* Same height for all input elements */
+}
+
+.p-float-label {
+  position: relative;
+  width: 100%;
+}
+
+.p-float-label input {
+  width: 100%;
+  padding: 12px 10px 6px; /* More top padding for label space */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.p-float-label input:focus + label,
+.p-float-label input:not(:placeholder-shown) + label {
+  top: 5px;
+  font-size: 12px;
+  color: #007ad9;
+}
+
+.p-float-label input, 
+.p-float-label .p-inputtext, 
+.p-float-label .p-dropdown, 
+.p-float-label .p-calendar input {
+    padding-top: 16px !important;
+    padding-bottom: 8px !important;
+}
+
+.p-dropdown-panel {
+  z-index: 1100 !important; /* Ensure dropdown is above modal */
+  max-height: 300px !important; /* Prevent excessive height */
+  overflow-y: auto !important;
+}
+
+.p-float-label label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #888;
+  transition: all 0.2s ease-in-out;
+  background: white;
+  padding: 0 4px; /* Adds spacing around label */
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  display: none !important;
+}
+
+body, button, input, select, textarea {
+  font-family: Arial; /* Uses the default sans-serif font of the browser */
+}
+
+/* Reset PrimeNG components */
+.p-component {
+  font-family: inherit !important; /* Forces PrimeNG to use browser default */
+}
+
+@media (max-width: 768px) {
+  .p-dialog {
+      width: 90% !important; /* Take full width on smaller screens */
+  }
+  .modal-dialog {
+      max-width: 95% !important;
+  }
+}

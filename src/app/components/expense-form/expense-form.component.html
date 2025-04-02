@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Expense Form</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="expense-form-container">
+    <!-- Expense Form -->
+    <form (ngSubmit)="onSubmit()" #expenseForm="ngForm">
+      <!-- Title Input -->
+      <ion-item>
+        <ion-label position="floating">Title</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="expense.title"
+          name="title"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <!-- Amount Input -->
+      <ion-item>
+        <ion-label position="floating">Amount</ion-label>
+        <ion-input
+          type="number"
+          [(ngModel)]="expense.amount"
+          name="amount"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <!-- Category Dropdown -->
+      <ion-item>
+        <ion-label>Category</ion-label>
+        <ion-select
+          [(ngModel)]="expense.category"
+          name="category"
+          placeholder="Select a category"
+          required
+        >
+          <ion-select-option *ngFor="let category of categoryOptions" [value]="category">
+            {{ category }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Date Input -->
+      <ion-item>
+        <ion-label position="floating">Date</ion-label>
+        <ion-datetime
+          displayFormat="DD-MM-YYYY"
+          [(ngModel)]="expense.date"
+          name="date"
+          required
+        ></ion-datetime>
+      </ion-item>
+
+      <!-- Form Buttons -->
+      <div class="form-buttons">
+        <ion-button type="button" color="medium" (click)="closeDialog()">Cancel</ion-button>
+        <ion-button type="submit" color="primary">Save Expense</ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar class="top-toolbar">
+    <div class="header-container">
+      <ion-title class="app-title">Expense Tracker</ion-title>
+      
+      <ion-searchbar 
+        placeholder="Search expenses..." 
+        class="search-container" 
+        (ionInput)="filterExpenses($event)"
+      ></ion-searchbar>
+      
+      <ion-select 
+        placeholder="Filter by Category" 
+        class="category-dropdown" 
+        [(ngModel)]="selectedCategory" 
+        (ionChange)="onCategoryChange($event)"
+      >
+        <ion-select-option *ngFor="let category of categories" [value]="category">
+          {{ category.label }}
+        </ion-select-option>
+      </ion-select>
+      
+      <ion-button color="primary" (click)="showDialog()">
+        <ion-icon name="add" slot="start"></ion-icon>
+        Add Expense
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="display: flex; align-items: flex-start; gap: 20px;">
+    <!-- Expense Table -->
+    <ion-grid class="table-scroll-container" style="flex: 3; min-width: 600px;">
+      <!-- Table Header -->
+      <ion-row>
+        <ion-col>Title</ion-col>
+        <ion-col>Amount</ion-col>
+        <ion-col>Category</ion-col>
+        <ion-col>Date</ion-col>
+        <ion-col>Actions</ion-col>
+      </ion-row>
+
+      <!-- Table Rows -->
+      <ion-row *ngFor="let expense of filteredExpenses">
+        <ion-col>{{ expense.title }}</ion-col>
+        <ion-col>{{ expense.amount | currency:'INR' }}</ion-col>
+        <ion-col>{{ expense.category }}</ion-col>
+        <ion-col>{{ expense.date }}</ion-col>
+        <ion-col>
+          <ion-button fill="clear" size="small" (click)="editExpense(expense)">
+            <ion-icon name="pencil-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="solid" color="danger" size="small" (click)="confirmDelete(expense.id)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!-- No Results Message -->
+      <ion-row *ngIf="filteredExpenses.length === 0">
+        <ion-col class="no-results" text-center>No results found.</ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Charts Container -->
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+      <canvas id="pieChart" class="pie-chart"></canvas>
+      <canvas id="lineChart" class="line-chart"></canvas>
+    </div>
+  </div>
+</ion-content>
+
+<!-- Add Expense Modal -->
+<ion-modal [isOpen]="displayDialog">
+  <ng-template>
+    <app-expense-form (formClosed)="closeDialog()"></app-expense-form>
+  </ng-template>
+</ion-modal>
+
+<!-- Edit Expense Modal -->
+<ion-modal [isOpen]="editDialogVisible">
+  <ng-template>
+    <app-expense-form 
+      [selectedExpense]="selectedExpense" 
+      (formClosed)="editDialogVisible = false" 
+      (expenseSaved)="handleExpenseUpdate($event)"
+    ></app-expense-form>
+  </ng-template>
+</ion-modal>
+
+<!-- <ion-toast
+  [isOpen]="toastVisible"
+  [message]="toastMessage"
+  duration="2000"
+  position="top">
+</ion-toast> -->

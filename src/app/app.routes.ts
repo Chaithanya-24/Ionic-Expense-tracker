@@ -1,13 +1,25 @@
 import { Routes } from '@angular/router';
 
+import { ExpenseListComponent } from './components/expense-list/expense-list.component';
+
+
 export const routes: Routes = [
-  {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-  },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
+    {
+        path:'',
+        redirectTo: '/expenses',
+        pathMatch: 'full'
+    },
+    // { 
+    //     path: 'expense/:id', 
+    //     component: ExpenseItemComponent
+    // },
+    { 
+        path: 'expenses', 
+        component: ExpenseListComponent 
+    },
+    
+
+//   { path: 'category/:category', component: CategoryExpensesComponent },
+
 ];
+

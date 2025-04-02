@@ -4,11 +4,21 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { provideHttpClient } from '@angular/common/http';
+import { expenseReducer } from './app/components/store/expense.reducer';
+import { categoryReducer } from './app/components/store/category.reducer';
+import { provideStore } from '@ngrx/store';
+import { CategoryEffects } from './app/components/store/category.effects';
+import { provideEffects } from '@ngrx/effects';
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideHttpClient(),
+    provideStore({ expenses: expenseReducer, categories: categoryReducer }),
+    provideRouter(routes), 
+    provideEffects([CategoryEffects]),
   ],
 });
