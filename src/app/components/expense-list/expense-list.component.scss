@@ -1,237 +1,28 @@
-/* Increase Table Size */
-.custom-table {
-    width: 90% !important;
-    height: 400px !important;
-    margin: auto;
-  }
-  
-  .delete-btn {
-    background-color: #dc3545 !important; /* Red */
-    color: white !important;
-    border: none;
-  }
-  
-  /* Change Icon Colors */
-  .pi {
-    font-size: 1.2rem !important;
-  }
-
-  /* Toolbar elements - same height */
-.search-container,
-.category-dropdown,
-.add-button {
-  height: 40px !important; /* Uniform height */
-}
-
-  .search-container {
-    display: flex;
-    align-items: center;
-    width: 600px ;
-    gap: 10px; /* Adjust spacing */
-}
-
- .p-dropdown {
-    height: 40px !important; /* Ensure equal height */
-    width: 250px !important; /* Set equal width */
-    font-size: 16px !important;
-    font-weight: 500 !important;
-    font-family:  inherit !important;
-    border-radius: 5px !important;
-    padding: 5px 12px !important;
-}
-
-  .search-btn {
-    height: 36px;
-  }
-  
-  .add-expense {
-    height: 40px !important; /* Ensure all elements have the same height */
-    font-size: 16px !important;
-    border-radius: 5px !important;
-    padding: 8px 16px !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #17a2b8; /* Match theme */
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-}
-  .p-input-icon-left input {
-   padding-left: 40px; /*Adjust padding to prevent overlap  */
-    width: 100%;
-  } 
-  .p-datatable-wrapper {
-    min-height: 300px; /* Adjust height as needed */
-  }
-
-  .action-buttons {
-    height: 30px;
-    display: flex;
-    align-items: center;
-  }
-
-  table tbody tr {
-    height: 50px; /* Adjust as needed */
-    vertical-align: middle;
-  }
-  
-  .p-confirm-dialog .p-dialog-header {
-    background-color: #ffcccc;
-    color: #d32f2f;
-  }
-  .expense-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  
-  .table-container {
-    flex: 2; /* Takes more space */
-  }
-  
-  .charts-container {
-    flex: 1; /* Takes less space */
-    display: flex;
-    flex-direction: column; /* Stacks Pie and Line Chart */
-    gap: 20px;
-  }
-  
-  .chart-box {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  
-  /* Reduce column width */
-.p-table thead th {
-  width: auto; /* Adjust automatically */
-  padding: 8px 12px; /* Reduce padding */
-  white-space: nowrap; /* Prevent text wrapping */
-}
-
-/* Reduce row height */
-.p-table tbody tr {
-  height: 30px; /* Adjust height */
-}
-
-/* Reduce padding inside cells */
-.p-table tbody td {
-  padding: 6px 10px; /* Reduce padding */
-  font-size: 14px; /* Adjust text size if needed */
-}
-
-/* Make table responsive */
-.responsive-table {
-  overflow-x: auto; /* Enable horizontal scrolling */
-  width: 100%;
-}
-
-/* Ensure the table doesn't break layout */
-.responsive-table table {
-  width: 100%;
-  min-width: 600px; /* Prevent squishing */
-  border-collapse: collapse;
-}
-
-
-.app-title{
-  font-size: 25px; /* Adjust font size */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  color: #333; /* Adjust color */
-}
-
-/* Align search box and dropdown properly */
-/* Reduce excessive padding in the toolbar */
-.p-toolbar-group-right {
+.header-container {
   display: flex;
   align-items: center;
-  gap: 1px; /* Reduced spacing */
+  justify-content: space-between;
+  gap: 16px; /* Adjust spacing between items */
+}
+.search-container {
+  flex: 3; /* Makes the search bar take more space */
+  min-width: 300px;
 }
 
-/* Make the dropdown uniform */
 .category-dropdown {
-  width: 180px;
-}
-/* Reset font to browser default */
-body, button, input, select, textarea {
-  font-family:inherit; 
+  flex: 1; /* Reduces the width of the category dropdown */
+  max-width: 150px;
 }
 
-/* Reset PrimeNG components */
-.p-component {
-  font-family: inherit !important; /* Forces PrimeNG to use browser default */
+.charts-container {
+  flex: 1; /* Takes less space */
+  display: flex;
+  flex-direction: column; /* Stacks Pie and Line Chart */
+  gap: 20px;
 }
 
-/* Scrollable Table */
-.table-scroll-container {
-  max-height: 555px;  /* Set height limit */
-  overflow-y: auto;  /* Enable vertical scrolling */
-  overflow-x: auto;
-  border: 1px solid #ddd; /* Optional: Add border for clarity */
+.chart-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
-
-.amount-column {
-  text-align: right;
-}
-
-
-/* Ensure Table Header Stays Fixed */
-.table-scroll-container thead {
-  position: sticky;
-  top: 0;
-  background: white; /* Keep header visible */
-  z-index: 1;
-}
-
-/* Adjust table styles */
-.p-datatable-wrapper {
-  max-height: 400px; /* Ensure scrolling works */
-  overflow-y: hidden;
-  
-}  
-
-@media screen and (max-width: 768px) {
-  .top-toolbar {
-      flex-direction: column; /* Stack elements */
-      align-items: stretch; /* Full width items */
-  }
-
-  .search-container, 
-  .filter-container, 
-  .add-expense-btn {
-      width: 100%; /* Full width on smaller screens */
-      text-align: center; /* Center items */
-  }
-  .responsive-table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  .table-scroll-container {
-    max-height: none; /* Remove height restriction */
-  }
-
-
-  /* Ensure input fields are full width */
-  .search-container,
-  .category-dropdown,
-  .add-button {
-    width: 100%;
-    text-align: center;
-  }
-
-  /* Stack charts below table */
-  .expense-container {
-    flex-direction: column;
-  }
-
-  .actions-column {
-    flex-wrap: wrap; /* Stack buttons if needed */
-  }
-}
-

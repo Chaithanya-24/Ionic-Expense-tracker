@@ -9,6 +9,7 @@
     <!-- Expense Form -->
     <form (ngSubmit)="onSubmit()" #expenseForm="ngForm">
       <!-- Title Input -->
+       <div> 
       <ion-item>
         <ion-label position="floating">Title</ion-label>
         <ion-input
@@ -18,8 +19,9 @@
           required
         ></ion-input>
       </ion-item>
-
+    </div>
       <!-- Amount Input -->
+       <div>
       <ion-item>
         <ion-label position="floating">Amount</ion-label>
         <ion-input
@@ -29,8 +31,9 @@
           required
         ></ion-input>
       </ion-item>
-
+    </div>
       <!-- Category Dropdown -->
+       <div>
       <ion-item>
         <ion-label>Category</ion-label>
         <ion-select
@@ -39,13 +42,15 @@
           placeholder="Select a category"
           required
         >
-          <ion-select-option *ngFor="let category of categoryOptions" [value]="category">
-            {{ category }}
+          <ion-select-option *ngFor="let category of categoryOptions" [value]="category.value">
+            {{ category.label }}
           </ion-select-option>
         </ion-select>
       </ion-item>
+    </div>
 
       <!-- Date Input -->
+       <div>
       <ion-item>
         <ion-label position="floating">Date</ion-label>
         <ion-datetime
@@ -55,6 +60,7 @@
           required
         ></ion-datetime>
       </ion-item>
+       </div>
 
       <!-- Form Buttons -->
       <div class="form-buttons">

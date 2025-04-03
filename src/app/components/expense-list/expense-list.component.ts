@@ -4,24 +4,27 @@ import { Store } from '@ngrx/store';
 import { ChartData } from 'chart.js';
 import { Observable } from 'rxjs';
 import { CategoryService } from 'src/app/services/category.sevice';
-import { deleteExpense } from '../store/expense.actions';
+import { deleteExpense, loadExpenses } from '../store/expense.actions';
 import { Expense } from '../store/expense.model';
 import { selectAllExpenses } from '../store/expense.selector';
 import { AlertController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Icon } from 'ionicons/dist/types/components/icon/icon';
 import { CommonModule } from '@angular/common';
+import { TimeagoModule } from 'ngx-timeago';
 import { ModalController, ToastController } from '@ionic/angular';
 import { ExpenseFormComponent } from "../expense-form/expense-form.component";
+import { format, differenceInCalendarDays } from 'date-fns';
+
+
 
 @Component({
   selector: 'app-expense-list',
   templateUrl: './expense-list.component.html',
   styleUrls: ['./expense-list.component.scss'],
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, IonicModule, CommonModule, ExpenseFormComponent],
+  imports: [FormsModule, ReactiveFormsModule, IonicModule, CommonModule, ExpenseFormComponent, TimeagoModule],
   providers:[ToastController, ModalController],
 })
 export class ExpenseListComponent  implements OnInit {
@@ -46,6 +49,23 @@ filteredExpenses: Expense[] = [];
 updatedExpense: Expense [] = [];
   // toastMessage: string;
   // toastVisible: boolean;
+  formatDateRelative(dateString: string): string {
+    const inputDate = new Date(dateString);
+    const today = new Date();
+  
+    // Get the difference in days
+    const daysDifference = differenceInCalendarDays(today, inputDate);
+  
+    if (daysDifference === 0) {
+      return 'today';
+    } else if (daysDifference === 1) {
+      return 'yesterday';
+    } else if (daysDifference > 1 && daysDifference <= 30 && today.getMonth() === inputDate.getMonth()) {
+      return `${daysDifference} days ago`;
+    } else {
+      return format(inputDate, 'MMMM'); // Display the month's name
+    }
+  }
 
 updateLocalStorage() {
 localStorage.setItem('expenses', JSON.stringify(this.expenses));
@@ -55,9 +75,10 @@ showDialog(expense?: Expense) {
 if (expense) {
   this.selectedExpense = { ...expense }; // Clone to prevent direct mutation
 } else {
-  this.selectedExpense = null; // New expense
+  this.selectedExpense = { id: 0, title: '', amount: 0, category: '', date: '' }; // Initialize a new expense}
 }
 this.displayDialog = true;
+
 }
 
 filterExpenses(event: Event) {
@@ -73,10 +94,22 @@ filterExpenses(event: Event) {
   );
 }
 
+  loadExpensesFromLocalStorage() {
+    const storedExpenses = localStorage.getItem('expenses'); // Directly access localStorage
+    if (storedExpenses) {
+      try {
+        const parsedExpenses = JSON.parse(storedExpenses); // Parse the stored JSON data
+        if (Array.isArray(parsedExpenses) && parsedExpenses.length > 0) {
+          this.store.dispatch(loadExpenses({ expenses: parsedExpenses })); // Dispatch action to update NgRx state
+        }
+      } catch (error) {
+        console.error('Error parsing expenses from localStorage:', error);
+      }
+    }
+  }
 
 filterByCategory(selectedCategory: string) {
-this.selectedCategory = selectedCategory;
-
+// this.selectedCategory = selectedCategory;
 if (selectedCategory) {
   this.filteredExpenses = this.expenses.filter(expense => expense.category === selectedCategory);
 } else {
@@ -155,7 +188,8 @@ this.editDialogVisible = false;
 }
 
 
-ngOnInit() {
+ngOnInit(){
+this.loadExpensesFromLocalStorage(); // Load expenses from localStorage on init
 this.store.select(selectAllExpenses).subscribe((data) => {
   this.expenses = data.map(expense => {
     if (!expense.date || isNaN(Date.parse(expense.date))) {
@@ -167,7 +201,7 @@ this.store.select(selectAllExpenses).subscribe((data) => {
       date: expense.date.includes('T') ? expense.date : new Date(expense.date).toISOString().split('T')[0]
     };
   });
-
+  // console.log('Expenses fetched:', this.expenses); // Debugging
   this.filteredExpenses = [...this.expenses];
   this.updatePieChart(); // Update the Pie Chart
   this.updateLineChart(this.expenses); // Update the Line Chart
