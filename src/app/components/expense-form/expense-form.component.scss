@@ -1,8 +1,29 @@
 .expense-form-container {
-  height: 100%; /* Makes it full screen height */
-  overflow-y:scroll
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
 }
 
-.form-buttons{
-  color: red;
+form {
+  width: 100%;
+  max-width: 500px;
+}
+
+ion-item {
+  margin-bottom: 12px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+::ng-deep .custom-modal-class {
+  --width: 90%;
+  --max-width: 500px;
+  --border-radius: 12px;
+  --height: auto;
 }

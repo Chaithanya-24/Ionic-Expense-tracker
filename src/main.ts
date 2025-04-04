@@ -10,7 +10,8 @@ import { categoryReducer } from './app/components/store/category.reducer';
 import { provideStore } from '@ngrx/store';
 import { CategoryEffects } from './app/components/store/category.effects';
 import { provideEffects } from '@ngrx/effects';
-
+import { TimeagoModule } from 'ngx-timeago';
+import { importProvidersFrom } from '@angular/core';
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -20,5 +21,6 @@ bootstrapApplication(AppComponent, {
     provideStore({ expenses: expenseReducer, categories: categoryReducer }),
     provideRouter(routes), 
     provideEffects([CategoryEffects]),
+    importProvidersFrom(TimeagoModule.forRoot()) // Use TimeagoModule.forRoot() here
   ],
 });

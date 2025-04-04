@@ -15,7 +15,9 @@ import { CommonModule } from '@angular/common';
 import { TimeagoModule } from 'ngx-timeago';
 import { ModalController, ToastController } from '@ionic/angular';
 import { ExpenseFormComponent } from "../expense-form/expense-form.component";
-import { format, differenceInCalendarDays } from 'date-fns';
+// import { Chart } from 'chart.js';
+import Chart from 'chart.js/auto';
+import { TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
 
 
 
@@ -25,13 +27,15 @@ import { format, differenceInCalendarDays } from 'date-fns';
   styleUrls: ['./expense-list.component.scss'],
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, IonicModule, CommonModule, ExpenseFormComponent, TimeagoModule],
-  providers:[ToastController, ModalController],
+  providers:[ToastController, ModalController,{ provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }],
 })
 export class ExpenseListComponent  implements OnInit {
 
 // Placeholder for chart data, we will update it dynamically later
-pieChartData: ChartData<'pie'> | undefined; //  Use ChartData for Pie Chart
-lineChartData: ChartData<'line'> | undefined; //  Use ChartData for Line Chart
+pieChart: Chart | undefined;
+lineChart: Chart | undefined;
+pieChartRef: any;
+lineChartRef: any;
 
 private store = inject(Store);
 private router = inject(Router);
@@ -49,23 +53,23 @@ filteredExpenses: Expense[] = [];
 updatedExpense: Expense [] = [];
   // toastMessage: string;
   // toastVisible: boolean;
-  formatDateRelative(dateString: string): string {
-    const inputDate = new Date(dateString);
-    const today = new Date();
+  // formatDateRelative(dateString: string): string {
+  //   const inputDate = new Date(dateString);
+  //   const today = new Date();
   
-    // Get the difference in days
-    const daysDifference = differenceInCalendarDays(today, inputDate);
+  //   // Get the difference in days
+  //   const daysDifference = differenceInCalendarDays(today, inputDate);
   
-    if (daysDifference === 0) {
-      return 'today';
-    } else if (daysDifference === 1) {
-      return 'yesterday';
-    } else if (daysDifference > 1 && daysDifference <= 30 && today.getMonth() === inputDate.getMonth()) {
-      return `${daysDifference} days ago`;
-    } else {
-      return format(inputDate, 'MMMM'); // Display the month's name
-    }
-  }
+  //   if (daysDifference === 0) {
+  //     return 'today';
+  //   } else if (daysDifference === 1) {
+  //     return 'yesterday';
+  //   } else if (daysDifference > 1 && daysDifference <= 30 && today.getMonth() === inputDate.getMonth()) {
+  //     return `${daysDifference} days ago`;
+  //   } else {
+  //     return format(inputDate, 'MMMM'); // Display the month's name
+  //   }
+  // }
 
 updateLocalStorage() {
 localStorage.setItem('expenses', JSON.stringify(this.expenses));
@@ -118,7 +122,10 @@ if (selectedCategory) {
 }
 
 
-constructor(private alertController: AlertController) {}
+constructor(
+  private modalCtrl: ModalController,
+  private alertController: AlertController
+) {}
 
 async confirmDelete(expenseId: number) {
   const alert = await this.alertController.create({
@@ -264,64 +271,95 @@ this.store.dispatch(deleteExpense({ id }));
 const storedExpenses = JSON.parse(localStorage.getItem('expenses') || '[]');
 const updatedExpenses = storedExpenses.filter((expense: Expense) => expense.id !== id);
 localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
+}
 
-
+async openExpenseFormModal() {
+  const modal = await this.modalCtrl.create({
+    component: ExpenseFormComponent,
+    backdropDismiss: true,
+    showBackdrop: true,
+    cssClass: 'custom-modal-class',
+  });
+  await modal.present();
+  await modal.onDidDismiss();
 }
 
 updatePieChart() {
-const categoryTotals: { [key: string]: number } = {};
+  const categoryTotals: { [key: string]: number } = {};
 
-// Calculate total expenses per category
-this.expenses.forEach(expense => {
-  if (categoryTotals[expense.category]) {
-    categoryTotals[expense.category] += expense.amount;
-  } else {
-    categoryTotals[expense.category] = expense.amount;
-  }
-});
-
-// Prepare data for the Pie Chart
-this.pieChartData = {
-  labels: Object.keys(categoryTotals),
-  datasets: [
-    {
-      data: Object.values(categoryTotals),
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800']
+  this.expenses.forEach(expense => {
+    if (categoryTotals[expense.category]) {
+      categoryTotals[expense.category] += expense.amount;
+    } else {
+      categoryTotals[expense.category] = expense.amount;
     }
-  ]
-};
-}  
-updateLineChart(expenses: Expense[]) {
-const monthlyTotals: { [month: string]: number } = {};
+  });
 
-// Process each expense
-expenses.forEach(expense => {
-  const month = new Date(expense.date).toLocaleString('en-US', { month: 'short', year: 'numeric' });
+  const labels = Object.keys(categoryTotals);
+  const data = Object.values(categoryTotals);
 
-  if (!monthlyTotals[month]) {
-    monthlyTotals[month] = 0;
+  if (this.pieChartRef) {
+    this.pieChartRef.destroy();  // prevent duplicate charts
   }
-  monthlyTotals[month] += expense.amount;
-});
 
-// Extract labels and data
-const labels = Object.keys(monthlyTotals).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-const data = labels.map(month => monthlyTotals[month]);
-
-// Assign to chart
-this.lineChartData = {
-  labels: labels,
-  datasets: [
-    {
-      label: 'Monthly Expenses',
-      data: data,
-      borderColor: '#42A5F5',
-      backgroundColor: 'rgba(66, 165, 245, 0.2)',
-      fill: true
-    }
-  ]
-};
+  const ctx: any = document.getElementById('pieChart');
+  if (ctx) {
+    this.pieChartRef = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels,
+        datasets: [
+          {
+            data,
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800'],
+            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800']
+          }
+        ]
+      }
+    });
+  }
 }
+
+
+
+updateLineChart(expenses: Expense[]) {
+  const monthlyTotals: { [month: string]: number } = {};
+
+  expenses.forEach(expense => {
+    const month = new Date(expense.date).toLocaleString('en-US', { month: 'short', year: 'numeric' });
+
+    if (!monthlyTotals[month]) {
+      monthlyTotals[month] = 0;
+    }
+    monthlyTotals[month] += expense.amount;
+  });
+
+  const labels = Object.keys(monthlyTotals).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  const data = labels.map(month => monthlyTotals[month]);
+
+  if (this.lineChartRef) {
+    this.lineChartRef.destroy(); // prevent duplicate charts
+  }
+
+  const ctx: any = document.getElementById('lineChart');
+  if (ctx) {
+    this.lineChartRef = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Monthly Expenses',
+            data,
+            borderColor: '#42A5F5',
+            backgroundColor: 'rgba(66, 165, 245, 0.2)',
+            fill: true
+          }
+        ]
+      }
+    });
+  }
+}
+
 
 }

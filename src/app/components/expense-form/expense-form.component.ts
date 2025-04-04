@@ -10,6 +10,9 @@ import { addExpense, loadExpenses, updateExpense } from '../store/expense.action
 import { FormsModule } from '@angular/forms'; // For [(ngModel)] and form functionality
 import { IonicModule } from '@ionic/angular'; // For Ionic components
 import { CommonModule } from '@angular/common'; // For Angular directives like *ngFor and *ngIf
+import { ModalController } from '@ionic/angular';
+import { ViewChild } from '@angular/core';
+import { IonModal } from '@ionic/angular';
 
 @Component({
   selector: 'app-expense-form',
@@ -35,8 +38,9 @@ export class ExpenseFormComponent  implements OnInit {
   editingId: number | null = null;
   isEditMode: boolean = false;
   expenseForm!: FormGroup;
-  constructor ( private fb: FormBuilder ) { }
+  constructor ( private fb: FormBuilder, private modalCtrl: ModalController ) { }
   // expenseForm!: FormGroup;
+  @ViewChild(IonModal) modal!: IonModal;
 
   ngOnInit() {
     this.initForm(); // Ensure the form exists
@@ -65,8 +69,18 @@ export class ExpenseFormComponent  implements OnInit {
         this.isEditMode = false;
       }
     });
+    setTimeout(() => {
+      const routerOutlet = document.querySelector('ion-router-outlet');
+      if (routerOutlet) {
+        routerOutlet.setAttribute('aria-hidden', 'false');
+      }
+    }, 200);
+    
   }
 
+  closeModal() {
+    this.modal.dismiss();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['selectedExpense'] && this.selectedExpense) {
@@ -98,7 +112,22 @@ formatDate(date: string): string {
     });
   }
 
-  
+  async openExpenseFormModal() {
+    const modal = await this.modalCtrl.create({
+      component: ExpenseFormComponent,
+      backdropDismiss: true,
+      showBackdrop: true,
+      cssClass: 'custom-modal-class',
+    });
+    await modal.present();
+    await modal.onDidDismiss();
+  }
+
+  openExpenseForm() {
+    const activeElement = document.activeElement as HTMLElement | null; // Type assertion
+    activeElement?.blur(); // Remove focus from the button
+    this.modalCtrl.create({ component: ExpenseFormComponent }).then(modal => modal.present());
+  }
   loadExpenses(id: number) {
     const expenses = JSON.parse(localStorage.getItem('expenses') || '[]');
     this.expense = expenses.find((exp: { id: number; }) => exp.id === id) || {};

@@ -1,15 +1,3 @@
-<!-- <div class="container">
-  <ion-searchbar placeholder="Search expenses..." (ionInput)="filterExpenses($event)"></ion-searchbar>
-  <ion-select [(ngModel)]="selectedCategory" placeholder="Filter by Category" (ionChange)="onCategoryChange($event)">
-    <ion-select-option *ngFor="let category of categories" [value]="category.value">
-      {{ category.label }}
-    </ion-select-option>
-  </ion-select>
-  <ion-button (click)="showDialog()">
-    <ion-icon name="add" slot="start"></ion-icon> Add Expense
-  </ion-button>
-</div> -->
-
 <ion-header>
   <ion-toolbar class="top-toolbar">
     <div class="header-container">
@@ -61,7 +49,7 @@
         <ion-col>{{ expense.title }}</ion-col>
         <ion-col>{{ expense.amount | currency:'INR' }}</ion-col>
         <ion-col>{{ expense.category }}</ion-col>
-        <ion-col>{{ formatDateRelative(expense.date) }}</ion-col>
+        <ion-col>{{ expense.date  }}</ion-col>
         <ion-col>
           <ion-button fill="solid" size="small" (click)="editExpense(expense)">
             <ion-icon name="pencil-outline"></ion-icon>
