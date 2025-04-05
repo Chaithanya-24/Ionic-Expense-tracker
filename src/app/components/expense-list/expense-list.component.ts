@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ChartData } from 'chart.js';
 import { Observable } from 'rxjs';
 import { CategoryService } from 'src/app/services/category.sevice';
 import { deleteExpense, loadExpenses } from '../store/expense.actions';
@@ -17,7 +16,8 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { ExpenseFormComponent } from "../expense-form/expense-form.component";
 // import { Chart } from 'chart.js';
 import Chart from 'chart.js/auto';
-import { TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
+import {  TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -26,8 +26,8 @@ import { TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
   templateUrl: './expense-list.component.html',
   styleUrls: ['./expense-list.component.scss'],
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, IonicModule, CommonModule, ExpenseFormComponent, TimeagoModule],
-  providers:[ToastController, ModalController,{ provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }],
+  imports: [FormsModule, ReactiveFormsModule, IonicModule, CommonModule, ExpenseFormComponent, TimeagoModule, DatePipe],
+  providers:[ToastController, ModalController,TimeagoIntl,{ provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }],
 })
 export class ExpenseListComponent  implements OnInit {
 
@@ -96,6 +96,7 @@ filterExpenses(event: Event) {
     expense.amount.toString().includes(query) ||
     new Date(expense.date).toLocaleDateString().includes(query)
   );
+  // console.log('Filtered expenses:', this.filteredExpenses[0]); // Debugging
 }
 
   loadExpensesFromLocalStorage() {
@@ -154,15 +155,7 @@ async confirmDelete(expenseId: number) {
   await alert.present();
 }
 
-// showToast(message: string) {
-//   this.toastMessage = message; // Set the message
-//   this.toastVisible = true; // Show the toast
 
-//   // Automatically hide the toast after the duration
-//   setTimeout(() => {
-//     this.toastVisible = false;
-//   }, 2000); // Match the duration in the template
-// }
 
 closeDialog() {
 this.displayDialog = false;
@@ -229,15 +222,6 @@ this.categoryService.categories$.subscribe((data: string[]) => {
 this.categoryService.fetchCategories();
 }
 
-getFormattedDate(date: string): string {
-const today = new Date();
-const givenDate = new Date(date);
-const differenceInDays = Math.floor((today.getTime() - givenDate.getTime()) / (1000 * 3600 * 24));
-
-return differenceInDays < 30 
-  ? date // Use timeago pipe in the template
-  : givenDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-}
 
 
 onCategoryChange(event: any) {
@@ -315,7 +299,11 @@ updatePieChart() {
             hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800']
           }
         ]
-      }
+      },
+      options: {
+        responsive: true, // Move here
+        maintainAspectRatio: false, // Move here
+      },
     });
   }
 }
@@ -356,7 +344,11 @@ updateLineChart(expenses: Expense[]) {
             fill: true
           }
         ]
-      }
+      },
+      options: {
+        responsive: true, // Move here
+        maintainAspectRatio: false, // Move here
+      },
     });
   }
 }

@@ -33,3 +33,56 @@
   --border-radius: 12px;
   --height: auto;
 }
+
+.form-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Table Section */
+.table-section {
+  flex: 3;
+  min-width: 600px;
+}
+
+/* Chart Sidebar */
+.chart-sidebar {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Chart Card Styling */
+.chart-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-card canvas {
+  width: 100% !important;
+  height: 250px !important;
+}
+
+
+/* Responsive: stack layout on small screens */
+@media (max-width: 768px) {
+  .form-container {
+    flex-direction: column;
+  }
+
+  .table-section,
+  .chart-sidebar {
+    width: 100%;
+  }
+}

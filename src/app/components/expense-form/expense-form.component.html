@@ -1,66 +1,44 @@
-
 <ion-header>
   <ion-toolbar>
     <ion-title>Expense Form</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div style="max-width: 500px; margin: auto; border: 1px solid #ccc; padding: 16px; border-radius: 12px;">
+<ion-content class="ion-padding remove-top-padding" [fullscreen]="true">
+  <div class="form-container">
     <!-- Expense Form -->
     <form (ngSubmit)="onSubmit()" #expenseForm="ngForm">
-      <!-- Title Input -->
       
+      <!-- Title Input -->
       <ion-item>
         <ion-label position="floating"><strong>Title</strong></ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="expense.title"
-          name="title"
-          required
-        ></ion-input>
+        <ion-input 
+        type="text" 
+        [(ngModel)]="expense.title" 
+        name="title" 
+        required></ion-input>
       </ion-item>
-    
+      
       <!-- Amount Input -->
-    
       <ion-item>
         <ion-label position="floating"><strong>Amount</strong></ion-label>
-        <ion-input
-          type="number"
-          [(ngModel)]="expense.amount"
-          name="amount"
-          required
-        ></ion-input>
+        <ion-input type="number" [(ngModel)]="expense.amount" name="amount" required></ion-input>
       </ion-item>
-   
+
       <!-- Category Dropdown -->
-     
       <ion-item>
         <ion-label><strong>Category</strong></ion-label>
-        <ion-select
-          [(ngModel)]="expense.category"
-          name="category"
-          placeholder="Select a category"
-          required
-        >
+        <ion-select [(ngModel)]="expense.category" name="category" placeholder="Select a category" required>
           <ion-select-option *ngFor="let category of categoryOptions" [value]="category.value">
             {{ category.label }}
           </ion-select-option>
         </ion-select>
       </ion-item>
-  
+
       <!-- Date Input -->
-      
       <ion-item>
-        <!-- <ion-label position="floating">Date</ion-label> -->
-        <ion-datetime
-          displayFormat="DD-MM-YYYY"
-          [(ngModel)]="expense.date"
-          name="date"
-          required
-        ></ion-datetime>
+        <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="expense.date" name="date" required></ion-datetime>
       </ion-item>
-      
 
       <!-- Form Buttons -->
       <div class="form-buttons">
