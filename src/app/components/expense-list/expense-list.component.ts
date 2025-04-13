@@ -76,6 +76,7 @@ localStorage.setItem('expenses', JSON.stringify(this.expenses));
 }
 
 showDialog(expense?: Expense) {
+  console.log('✅ Add Expense button clicked!');
 if (expense) {
   this.selectedExpense = { ...expense }; // Clone to prevent direct mutation
 } else {

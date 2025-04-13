@@ -36,6 +36,7 @@ export class ExpenseFormComponent  implements OnInit {
   expense: Expense = { id: 0, title: '', amount: 0, category: '', date: '' };
   displayDialog: boolean = false;
   editingId: number | null = null;
+  visible: boolean = true;
   isEditMode: boolean = false;
   expenseForm!: FormGroup;
   constructor ( private fb: FormBuilder, private modalCtrl: ModalController ) { }

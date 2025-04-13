@@ -1,91 +1,4 @@
-// .header-container {
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   gap: 16px; /* Adjust spacing between items */
-// }
-// .search-container {
-//   flex: 3; /* Makes the search bar take more space */
-//   min-width: 300px;
-// }
-
-// .category-dropdown {
-//   flex: 1; /* Reduces the width of the category dropdown */
-//   max-width: 150px;
-// }
-
-// .charts-container {
-//   flex: 1; /* Takes less space */
-//   display: flex;
-//   flex-direction: column; /* Stacks Pie and Line Chart */
-//   gap: 20px;
-// }
-
-// .chart-box {
-//   width: 100%;
-//   display: flex;
-//   justify-content: center;
-// }
-
-// ::ng-deep .custom-modal-class {
-//   --width: 90%;
-//   --max-width: 500px;
-//   --border-radius: 12px;
-//   --height: auto;
-// }
-
-// .form-container {
-//   display: flex;
-//   gap: 20px;
-//   align-items: flex-start;
-//   flex-wrap: wrap;
-// }
-
-// /* Table Section */
-// .table-section {
-//   flex: 3;
-//   min-width: 600px;
-// }
-
-// /* Chart Sidebar */
-// .chart-sidebar {
-//   flex: 1;
-//   min-width: 300px;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 20px;
-// }
-
-// /* Chart Card Styling */
-// .chart-card {
-//   background-color: white;
-//   border-radius: 12px;
-//   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-//   padding: 16px;
-//   width: 100%;
-//   max-width: 100%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// }
-
-// .chart-card canvas {
-//   width: 100% !important;
-//   height: 250px !important;
-// }
-
-
-// /* Responsive: stack layout on small screens */
-// @media (max-width: 768px) {
-//   .form-container {
-//     flex-direction: column;
-//   }
-
-//   .table-section,
-//   .chart-sidebar {
-//     width: 100%;
-//   }
-// }
+/********** Global Layout **********/
 .ion-content {
   --padding-start: 0;
   --padding-end: 0;
@@ -94,7 +7,8 @@
   background-color: #f3f4f6;
 }
 
-/* Header Section */
+
+/********** Header Section **********/
 .header-container {
   background: #aaccf0;
   color: white;
@@ -124,12 +38,14 @@
     .category-dropdown {
       flex: 1;
       min-width: 10px;
+      background-color: white;
+      color: black;
 
       label {
         font-size: 0.9rem;
         display: block;
         margin-bottom: 0.25rem;
-        color: white;
+        color: black;
       }
 
       ion-select {
@@ -148,7 +64,8 @@
   }
 }
 
-/* Table and chart layout */
+
+/********** Main Form Layout **********/
 .form-container {
   display: flex;
   flex-wrap: wrap;
@@ -157,6 +74,42 @@
   justify-content: space-between;
 }
 
+
+/********** Expense Cards **********/
+.expense-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1rem;
+
+  .expense-title {
+  color: black;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .expense-details {
+    font-size: 0.9rem;
+    color: #444;
+    margin-bottom: 0.5rem;
+  }
+
+  .expense-amount {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.75rem;
+  }
+
+  .expense-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+
+/********** Table Section (Responsive) **********/
 .table-section {
   flex: 3;
   min-width: 300px;
@@ -170,8 +123,7 @@
     min-width: 600px;
     border-collapse: collapse;
 
-    th,
-    td {
+    th, td {
       padding: 10px;
       text-align: left;
       white-space: nowrap;
@@ -183,6 +135,24 @@
   }
 }
 
+.table-scroll-container {
+  min-width: 600px;
+  overflow-x: auto;
+}
+
+ion-row {
+  align-items: center;
+  padding: 0.5rem 0;
+
+  ion-col {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+
+/********** Chart Sidebar **********/
 .chart-sidebar {
   flex: 1;
   min-width: 300px;
@@ -203,7 +173,26 @@
   }
 }
 
-/* Mobile adjustments */
+
+/********** Modals **********/
+::ng-deep .custom-modal-class {
+  --width: 90%;
+  --max-width: 500px;
+  --border-radius: 12px;
+  --height: auto;
+}
+
+
+/********** No Results **********/
+.no-results {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: gray;
+}
+
+
+/********** Responsive (Mobile < 768px) **********/
 @media screen and (max-width: 768px) {
   .header-actions {
     flex-direction: column;
@@ -216,64 +205,6 @@
     }
   }
 
-  .form-container {
-    flex-direction: column;
-  }
-
-  .table-section {
-    overflow-x: auto;
-  }
-}
-
-.table-scroll-container {
-  min-width: 600px;
-  overflow-x: auto;
-}
-
-ion-row {
-  align-items: center;
-  padding: 0.5rem 0;
-
-  ion-col {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-.no-results {
-  text-align: center;
-  padding: 1rem;
-  font-style: italic;
-  color: gray;
-}
-
-.chart-sidebar {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  min-width: 250px;
-
-  .chart-card {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  canvas {
-    width: 100% !important;
-    height: auto !important;
-  }
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-  .form-container {
-    flex-direction: column;
-  }
-
   .header-container {
     flex-direction: column;
     align-items: stretch;
@@ -282,22 +213,10 @@ ion-row {
       text-align: center;
       font-size: 1.3rem;
     }
-
-    .search-container,
-    .category-dropdown,
-    .add-expense-button {
-      width: 100%;
-    }
   }
 
-  .chart-sidebar {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    .chart-card {
-      flex: 1 1 100%;
-    }
+  .form-container {
+    flex-direction: column;
   }
 
   .table-section {
@@ -308,5 +227,15 @@ ion-row {
   .table-scroll-container {
     width: 100%;
     min-width: unset;
+  }
+
+  .chart-sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .chart-card {
+      flex: 1 1 100%;
+    }
   }
 }

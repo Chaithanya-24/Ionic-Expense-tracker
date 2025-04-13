@@ -22,11 +22,13 @@
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
     "@ionic/angular": "^8.0.0",
+    "@ionic/cordova-builders": "^12.2.0",
     "@ngrx/effects": "^19.1.0",
     "@ngrx/entity": "^19.1.0",
     "@ngrx/store": "^19.1.0",
     "@ngrx/store-devtools": "^19.1.0",
     "chart.js": "^4.4.8",
+    "cordova-browser": "7.0.0",
     "date-fns": "^4.1.0",
     "ionicons": "^7.0.0",
     "ngx-timeago": "^3.0.0",
@@ -78,7 +80,8 @@
       "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "browser"
     ]
   }
 }
