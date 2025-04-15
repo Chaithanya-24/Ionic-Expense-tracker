@@ -18,6 +18,7 @@ import { ExpenseFormComponent } from "../expense-form/expense-form.component";
 import Chart from 'chart.js/auto';
 import {  TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
 import { DatePipe } from '@angular/common';
+import { ExpenseItemComponent } from "../expense-item/expense-item.component";
 
 
 
@@ -26,7 +27,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './expense-list.component.html',
   styleUrls: ['./expense-list.component.scss'],
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, IonicModule, CommonModule, ExpenseFormComponent, TimeagoModule, DatePipe],
+  imports: [FormsModule, ReactiveFormsModule, IonicModule, CommonModule, ExpenseFormComponent, TimeagoModule, DatePipe, ExpenseItemComponent],
   providers:[ToastController, ModalController,TimeagoIntl,{ provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }],
 })
 export class ExpenseListComponent  implements OnInit {

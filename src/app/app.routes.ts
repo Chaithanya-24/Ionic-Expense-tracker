@@ -1,20 +1,21 @@
 import { Routes } from '@angular/router';
 
 import { ExpenseListComponent } from './components/expense-list/expense-list.component';
+import { ExpenseItemComponent } from './components/expense-item/expense-item.component';
 
 
 export const routes: Routes = [
     {
         path:'',
-        redirectTo: '/expenses',
+        redirectTo: '/list',
         pathMatch: 'full'
     },
-    // { 
-    //     path: 'expense/:id', 
-    //     component: ExpenseItemComponent
-    // },
     { 
-        path: 'expenses', 
+        path: 'dashboard', 
+        component: ExpenseItemComponent
+    },
+    { 
+        path: 'list', 
         component: ExpenseListComponent 
     },
     

@@ -1,36 +1,28 @@
 <ion-header>
   <ion-toolbar class="top-toolbar">
-    <div class="header-container">
+    <div class="header-top-row">
       <ion-title class="app-title">Expense Tracker</ion-title>
-      <div class="header-actions">
-      <ion-searchbar 
-        placeholder="Search expenses..." 
-        class="search-container" 
-        (ionInput)="filterExpenses($event)"
-      ></ion-searchbar>
-      
+
       <ion-select 
-        placeholder="Filter by Category" 
+        placeholder="Category" 
         class="category-dropdown" 
         [(ngModel)]="selectedCategory" 
         (ionChange)="onCategoryChange($event)"
-        >
+      >
         <ion-select-option *ngFor="let category of categories" [value]="category.value">
           {{ category.label }}
         </ion-select-option>
       </ion-select>
-      
-      <ion-button 
-      class="add-expense-button"
-      color="primary" 
-      (click)="showDialog()">
-        <ion-icon name="add" slot="start"></ion-icon>
-        Add Expense
-      </ion-button>
     </div>
-    </div>
+
+    <ion-searchbar 
+      placeholder="Search expenses..." 
+      class="search-container" 
+      (ionInput)="filterExpenses($event)"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content class="ion-padding" [fullscreen]="true">
  <!-- Expense Cards -->
@@ -64,16 +56,16 @@
   </div>
 
     <!-- Charts -->
-    <div class="chart-sidebar">
-      <div class="chart-card">
-        <canvas id="pieChart"></canvas>
-      </div>
-      <div class="chart-card">
-        <canvas id="lineChart"></canvas>
-      </div>
-    </div>
+    <app-expense-item [expenses]="filteredExpenses"></app-expense-item>
+
   </div>
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="primary" (click)="showDialog()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>  
 </ion-content>
+
 
 <!-- Add Expense Modal -->
 <ion-modal [isOpen]="displayDialog" (ionModalDidDismiss)="closeDialog()">
